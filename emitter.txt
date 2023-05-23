@@ -1,0 +1,38 @@
+
+//Create a file in util folder
+
+	import EventEmitter from 'eventemitter3';
+
+
+    const emitter = new EventEmitter();
+    const Emitter = {
+        on: (event, fn) => emitter.on(event, fn),
+        once: (event, fn) => emitter.once(event, fn),
+        off: (event, fn) => emitter.off(event, fn),
+        emit: (event, payload) => emitter.emit(event, payload)
+        }
+
+        Object.freeze(Emitter);
+
+	export default emitter;
+	
+//Want to perform any task on certain event 
+	example : redirect to login page on token expiration
+	
+	use this code in app.js pr a componenrt that renders at the time of token expiration , app.js will be the best file 
+	
+	const navigate = useNavigate();
+
+	useEffect(() => {
+    emitter.on('TOKEN_EXPIRED', (isExpired) => {
+      console.log(isExpired);
+      return navigate("/login");
+    });
+
+    return () => emitter.off('TOKEN_EXPIRED');
+	}, [navigate]);
+
+
+// Use this emitter at the point of token expiration
+	
+	emitter.emit('TOKEN_EXPIRED', true);
